@@ -3,7 +3,7 @@
  * @Email: 15901450207@163.com
  * @Date: 2020-07-06 14:34:54
  * @LastEditors: liuzhenghe
- * @LastEditTime: 2020-10-17 14:51:41
+ * @LastEditTime: 2020-11-06 18:31:56
  * @Descripttion: 自定义标注
 --> 
 
@@ -63,11 +63,18 @@ export default {
       gisModules: [
         'esri/SpatialReference',
         'esri/Color',
+        'esri/symbols/TextSymbol',
+        'esri/symbols/SimpleMarkerSymbol',
+        'esri/symbols/SimpleLineSymbol',
+        'esri/symbols/SimpleFillSymbol',
         'esri/symbols/PictureMarkerSymbol', // 图片标注
         'esri/symbols/TextSymbol', // 文字标注
         'esri/symbols/Font',
-        'esri/geometry/Extent', // 范围
+        'esri/geometry/Extent',
         'esri/geometry/Point',
+        'esri/geometry/Polyline',
+        'esri/geometry/Polygon',
+        'esri/geometry/geometryEngine',
         'esri/layers/GraphicsLayer', // 图形图层
         'esri/graphic', // 图形
         'esri/map',
@@ -140,12 +147,46 @@ export default {
 
     /**
      * @name: 添加自定义标注
-     * @param {data}
+     * @param {data} Array 坐标集合
      */
     addCustomSymbols(data) {
       this.clearCustomSymbols('自定义标注图层')
       let icon = ''
       let font = new this.gisConstructor.Font('16px')
+      // 添加单个点
+      let pointGeometry = new this.gisConstructor.Point(
+        -13043281.135811023,
+        3855505.0468097497,
+        new this.gisConstructor.SpatialReference(this.map.spatialReference)
+      )
+      let pointSymbol = new this.gisConstructor.SimpleMarkerSymbol({
+        color: new this.gisConstructor.Color([255, 0, 0]),
+        width: 10,
+        height: 10,
+      })
+      let pointSymbolGraphic = new this.gisConstructor.graphic(
+        pointGeometry,
+        pointSymbol,
+      )
+      this.customSymbolsLayer.add(pointSymbolGraphic)
+
+      // 添加线
+      let lineJson = {
+        paths: [[-13044279.594493024, 3856594.274462842], [-13044169.71626486, 3856011.442122152], [-13043644.211695386, 3856011.442122152], [-13043586.883924171, 3855763.021780219], [-13042918.059926659, 3855810.7949228985]],
+        spatialReference: new this.gisConstructor.SpatialReference(this.map.spatialReference)
+      }
+      let lineGeometry = new this.gisConstructor.Polyline(lineJson)
+      let lineSymbol = new this.gisConstructor.SimpleLineSymbol()
+      let lineSymbolGraphic = new this.gisConstructor.graphic(
+        lineGeometry,
+        lineSymbol,
+      )
+      console.log(lineSymbolGraphic)
+      this.customSymbolsLayer.add(lineSymbolGraphic)
+      // 添加面
+
+
+      // 添加多个文字图标标注
       for (let i = 0; i < data.length; i++) {
         if (data[i].type === 1) {
           icon = require('@/assets/images/ico01.png')
