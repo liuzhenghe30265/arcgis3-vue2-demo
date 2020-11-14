@@ -3,19 +3,19 @@
  * @Email: 15901450207@163.com
  * @Date: 2020-07-06 14:34:54
  * @LastEditors: liuzhenghe
- * @LastEditTime: 2020-11-13 15:40:00
+ * @LastEditTime: 2020-11-14 15:16:58
  * @Descripttion: 自定义标注
 --> 
 
 <template>
   <div id="map-container"
-       style="width:100%;height:100%;">
+    style="width:100%;height:100%;">
     <div
-         style="position:absolute;right:50px;top:50px;z-index:999;">
+      style="position:absolute;right:50px;top:50px;z-index:999;">
       <button
-              @click="addCustomSymbols(symbolData)">自定义标注</button>
+        @click="addCustomSymbols()">自定义标注</button>
       <button
-              @click="clearCustomSymbols()">清除标注</button>
+        @click="clearCustomSymbols()">清除标注</button>
     </div>
   </div>
 </template>
@@ -25,38 +25,6 @@ export default {
   name: 'CustomSymbols',
   data() {
     return {
-      symbolData: [
-        {
-          address: 'marker1',
-          x: -13043465.062410325,
-          y: 3857375.365345625,
-          type: 1,
-        },
-        {
-          address: 'marker2',
-          x: -13041492.031617718,
-          y: 3857031.398718342,
-          type: 2,
-        },
-        {
-          address: 'marker3',
-          x: -13041042.964076541,
-          y: 3855808.4062657813,
-          type: 2,
-        },
-        {
-          address: 'marker4',
-          x: -13044606.840520333,
-          y: 3854317.8842142224,
-          type: 3,
-        },
-        {
-          address: 'marker5',
-          x: -13043035.104126222,
-          y: 3855120.4730112157,
-          type: 3,
-        },
-      ],
       positionLayer: '', // 定位图层
       customSymbolsLayer: '', // 自定义标注图层
       gisConstructor: {}, // gis 构造函数
@@ -99,7 +67,6 @@ export default {
      * @name: 设置中心点和缩放
      * @param {point} Array
      * @param {zoom} Number
-     * @return:
      */
     setCenterAndZoom(point, zoom) {
       let _point = new this.gisConstructor.Point(
@@ -149,68 +116,193 @@ export default {
      * @name: 添加自定义标注
      * @param {data} Array 坐标集合
      */
-    addCustomSymbols(data) {
+    addCustomSymbols() {
       this.clearCustomSymbols('自定义标注图层')
-      let icon = ''
-      let font = new this.gisConstructor.Font('16px')
-      // 添加单个点
-      let pointGeometry = new this.gisConstructor.Point(
-        -13043281.135811023,
-        3855505.0468097497,
-        new this.gisConstructor.SpatialReference(this.map.spatialReference)
-      )
-      let pointSymbol = new this.gisConstructor.SimpleMarkerSymbol({
-        color: new this.gisConstructor.Color([255, 0, 0]),
-        width: 10,
-        height: 10,
+
+      // 添加点
+      let pointList = [
+        {
+          x: -13045958.820458127,
+          y: 3857040.953346878
+        },
+        {
+          x: - 13046302.78708541,
+          y: 3855244.6831821785
+        },
+        {
+          x: -13043281.135811023,
+          y: 3855505.0468097497
+        }
+      ]
+      pointList.forEach(item => {
+        let pointGeometry = new this.gisConstructor.Point(
+          item.x,
+          item.y,
+          new this.gisConstructor.SpatialReference(this.map.spatialReference)
+        )
+        let pointSymbol = new this.gisConstructor.SimpleMarkerSymbol({
+          color: new this.gisConstructor.Color([255, 0, 0]),
+          width: 10,
+          height: 10,
+        })
+        let pointSymbolGraphic = new this.gisConstructor.graphic(
+          pointGeometry,
+          pointSymbol,
+        )
+        this.customSymbolsLayer.add(pointSymbolGraphic)
       })
-      let pointSymbolGraphic = new this.gisConstructor.graphic(
-        pointGeometry,
-        pointSymbol,
-      )
-      this.customSymbolsLayer.add(pointSymbolGraphic)
 
       // 添加线
-      let polylineSymbol = new this.gisConstructor.SimpleLineSymbol(
-        this.gisConstructor.SimpleLineSymbol.STYLE_SOLID,
-        new this.gisConstructor.Color([255, 0, 0, 1]),
-        3
-      )
-      let polylinePaths = []
-      polylinePaths[0] = [[-13043465.062410325, 3857375.365345625], [-13043035.104126222, 3855120.4730112157], [-13041492.031617718, 3857031.398718342]]
-      let polylineGeometry = new this.gisConstructor.Polyline({
-        paths: polylinePaths,
-        spatialReference: this.map.spatialReference
+      let pathsList = [
+        {
+          paths: [
+            [
+              [-13039796.085052641, 3858789.450368899],
+              [-13039862.96745239, 3855101.3637541444]
+            ]
+          ]
+        },
+        {
+          paths: [
+            [
+              [-13043465.062410325, 3857375.365345625],
+              [-13043035.104126222, 3855120.4730112157],
+              [-13041492.031617718, 3857031.398718342]
+            ]
+          ]
+        },
+        {
+          paths: [
+            [
+              [-13045423.761260131, 3854050.3546152245],
+              [-13043388.62538204, 3853801.934273298]
+            ]
+          ]
+        }
+      ]
+      pathsList.forEach(item => {
+        let polylineSymbol = new this.gisConstructor.SimpleLineSymbol(
+          this.gisConstructor.SimpleLineSymbol.STYLE_SOLID,
+          new this.gisConstructor.Color([255, 0, 0, 1]),
+          3
+        )
+        let polylineGeometry = new this.gisConstructor.Polyline({
+          paths: item.paths,
+          spatialReference: this.map.spatialReference
+        })
+        let polylineGraphic = new this.gisConstructor.graphic(
+          polylineGeometry,
+          polylineSymbol
+        )
+        this.customSymbolsLayer.add(polylineGraphic)
       })
-      let polylineGraphic = new this.gisConstructor.graphic(
-        polylineGeometry,
-        polylineSymbol
-      )
-      this.customSymbolsLayer.add(polylineGraphic)
 
       // 添加面
-      let polygonSymbol = new this.gisConstructor.SimpleFillSymbol(
-        this.gisConstructor.SimpleFillSymbol.STYLE_SOLID,
+      let ringsList = [
         {
-          color: setSymbolColor.call(this, 'line'),
-          width: 2,
+          rings: [
+            [
+              [-13042519.154185297, 3858502.8115128297],
+              [-13040761.102534741, 3858053.743971655],
+              [-13040780.211791812, 3857432.693116839],
+              [-13040722.884020599, 3856209.7006642777],
+              [-13041057.296019346, 3856219.2552928133],
+              [-13041859.88481634, 3856544.112663025],
+              [-13042519.154185297, 3858502.8115128297]
+            ]
+          ]
         },
-        new this.gisConstructor.Color([255, 0, 0, 1])
-      )
+        {
+          rings: [
+            [
+              [-13040608.228478171, 3855225.5739251073],
+              [-13040254.707222352, 3855588.6498094616],
+              [-13039251.471226111, 3854824.279526611],
+              [-13039194.143454896, 3854308.329585687],
+              [-13039824.748938248, 3854499.422156399],
+              [-13040608.228478171, 3855225.5739251073]
+            ]
+          ]
+        },
+        {
+          rings: [
+            [
+              [-13045309.105717704, 3858646.1309408643],
+              [-13043904.575322965, 3858197.0633996897],
+              [-13045223.114060882, 3857270.264431733],
+              [-13045309.105717704, 3858646.1309408643]
+            ]
+          ]
+        }
+      ]
+      ringsList.forEach(item => {
+        let polygonSymbol = new this.gisConstructor.SimpleFillSymbol(
+          this.gisConstructor.SimpleFillSymbol.STYLE_SOLID,
+          new this.gisConstructor.SimpleLineSymbol(
+            {
+              color: new this.gisConstructor.Color([0, 48, 166, 0.8]),
+              width: 2,
+            }
+          ),
+          new this.gisConstructor.Color([0, 48, 166, 0.25])
+        )
+        let polygonGeometry = new this.gisConstructor.Polygon({
+          rings: item.rings,
+          spatialReference: this.map.spatialReference
+        })
+        let polygonGraphic = new this.gisConstructor.graphic(
+          polygonGeometry,
+          polygonSymbol
+        )
+        this.customSymbolsLayer.add(polygonGraphic)
+      })
 
 
       // 添加多个文字图标标注
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].type === 1) {
+      let symbolData = [
+        {
+          text: 'marker1',
+          x: -13043465.062410325,
+          y: 3857375.365345625,
+          type: 1,
+        },
+        {
+          text: 'marker2',
+          x: -13041492.031617718,
+          y: 3857031.398718342,
+          type: 2,
+        },
+        {
+          text: 'marker3',
+          x: -13041042.964076541,
+          y: 3855808.4062657813,
+          type: 2,
+        },
+        {
+          text: 'marker4',
+          x: -13044606.840520333,
+          y: 3854317.8842142224,
+          type: 3,
+        },
+        {
+          text: 'marker5',
+          x: -13043035.104126222,
+          y: 3855120.4730112157,
+          type: 3,
+        },
+      ]
+      let icon = ''
+      symbolData.forEach(item => {
+        if (item.type === 1) {
           icon = require('@/assets/images/ico01.png')
-        } else if (data[i].type === 2) {
+        } else if (item.type === 2) {
           icon = require('@/assets/images/ico02.png')
         } else {
           icon = require('@/assets/images/ico03.png')
         }
         let point = new this.gisConstructor.Point(
-          data[i].x,
-          data[i].y,
+          item.x,
+          item.y,
           new this.gisConstructor.SpatialReference(this.map.spatialReference)
         )
         let symbol = new this.gisConstructor.PictureMarkerSymbol({
@@ -221,29 +313,31 @@ export default {
         let iconGraphic = new this.gisConstructor.graphic(
           point,
           symbol,
-          data[i]
+          item
         )
         this.customSymbolsLayer.add(iconGraphic)
         let textSymbol = new this.gisConstructor.TextSymbol(
-          data[i].address,
-          font,
+          item.text,
+          new this.gisConstructor.Font('16px'),
           new this.gisConstructor.Color([0, 0, 0])
         )
         let holoColor = this.gisConstructor.Color('#fff')
         textSymbol.setOffset(0, 15).setHaloColor(holoColor).setHaloSize(2)
         let textGraphic = new this.gisConstructor.graphic(
           new this.gisConstructor.Point(
-            data[i].x,
-            data[i].y,
+            item.x,
+            item.y,
             new this.gisConstructor.SpatialReference(this.map.spatialReference)
           ),
           textSymbol
         )
         this.customSymbolsLayer.add(textGraphic)
-      }
+      })
     },
 
-    // 初始化地图
+    /**
+     * @name: 初始化地图
+     */
     init() {
       // 加载 css
       loadCss('https://js.arcgis.com/3.32/esri/css/esri.css')
@@ -260,6 +354,7 @@ export default {
 
     /**
      * @name: 添加自定义图层
+     * @msg: 地图初始化完成之后添加自定义图层或服务
      */
     addCustomLayer() {
       this.positionLayer = new this.gisConstructor.GraphicsLayer({
@@ -268,17 +363,47 @@ export default {
       })
       this.map.addLayer(this.positionLayer)
 
+      // 高亮图层
+      let highlightLayer = new this.gisConstructor.GraphicsLayer({
+        id: '高亮图层',
+        className: 'highlight-layer',
+      })
+      this.map.addLayer(highlightLayer)
+
       this.customSymbolsLayer = new this.gisConstructor.GraphicsLayer({
         id: '自定义标注图层',
         className: 'custom-layer',
       })
       this.map.addLayer(this.customSymbolsLayer)
+      // 针对某个 GraphicsLayer 做点击等事件事件
       this.customSymbolsLayer.on('click', event => {
         if (event.graphic.attributes) {
           console.log(event.graphic.attributes)
           let point = [event.graphic.attributes.x, event.graphic.attributes.y]
           this.setCenterAndZoom(point)
         }
+      })
+      // 做图形高亮效果
+      this.customSymbolsLayer.on("mouse-over", (evt) => {
+        if (evt.graphic.geometry) {
+          let geometry = evt.graphic.geometry
+          if (geometry.x && geometry.y) {
+            // 面
+          }
+          if (geometry.paths) {
+            // 线
+          }
+          if (geometry.rings) {
+            // 面
+            let fillSymbol = new this.gisConstructor.SimpleFillSymbol().setColor(new this.gisConstructor.Color([0, 48, 166, 0.5]))
+            fillSymbol.setOutline(new this.gisConstructor.SimpleLineSymbol(this.gisConstructor.SimpleLineSymbol.STYLE_SOLID, new this.gisConstructor.Color([0, 255, 255]), 3))
+            let fillGraphic = new this.gisConstructor.graphic(evt.graphic.geometry, fillSymbol)
+            highlightLayer.add(fillGraphic)
+          }
+        }
+      })
+      this.customSymbolsLayer.on("mouse-out", () => {
+        highlightLayer.clear()
       })
     },
     initMap(args) {

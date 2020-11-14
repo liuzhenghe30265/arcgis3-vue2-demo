@@ -3,7 +3,7 @@
  * @Email: 15901450207@163.com
  * @Date: 2020-07-11 09:06:28
  * @LastEditors: liuzhenghe
- * @LastEditTime: 2020-10-17 16:13:20
+ * @LastEditTime: 2020-11-14 16:08:17
  * @Descripttion: 加载 ArcGIS REST Services
 --> 
 
@@ -71,6 +71,7 @@ export default {
       map: '',
       gisConstructor: {}, // gis 构造函数
       gisModules: [
+        'dojo/_base/declare',
         'esri/layers/ArcGISTiledMapServiceLayer', // 切片服务图层
         'esri/layers/ArcGISDynamicMapServiceLayer', // 动态服务图层
         'esri/geometry/Extent', // 范围
@@ -139,18 +140,30 @@ export default {
           type: 'dynamic',
         },
       ]
-      for (let i = 0; i < layerList.length; i++) {
-        if (layerList[i].type === 'dynamic') {
+      layerList.forEach(item => {
+        if (item.type === 'dynamic') {
           let layer = new this.gisConstructor.ArcGISDynamicMapServiceLayer(
-            layerList[i].url,
+            item.url,
             {
-              id: layerList[i].id,
-              opacity: layerList[i].opacity || 1,
-              visible: layerList[i].visible,
+              id: item.id,
+              opacity: item.opacity || 1,
+              visible: item.visible,
             }
           )
           this.map.addLayer(layer)
         }
+      })
+
+      let layer = this.map.getLayer('DamageAssessment')
+      console.log(layer.layerInfos) // 通过 layerInfos 获取子服务失败，需要判断图层是否加载完成
+      if (layer.loaded) {
+        console.log(layer.layerInfos)
+      } else {
+        // eslint-disable-next-line no-undef
+        dojo.connect(layer, 'onLoad', (layer) => {
+          // 子图层数据加载完成可以动态设置 treeData
+          console.log(layer.layerInfos)
+        })
       }
     },
 

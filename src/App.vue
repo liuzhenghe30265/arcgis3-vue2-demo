@@ -1,12 +1,12 @@
 <template>
   <div id="app">
-    <div class="nav">
+    <!-- <div class="nav">
       <router-link
         v-for="item of routes"
         :key="item.name"
         :to="item.path">{{item.name}}
       </router-link>
-    </div>
+    </div> -->
     <div class="map-main">
       <router-view />
     </div>

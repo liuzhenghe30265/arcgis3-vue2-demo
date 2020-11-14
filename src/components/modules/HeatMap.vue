@@ -3,18 +3,18 @@
  * @Email: 15901450207@163.com
  * @Date: 2020-07-10 13:55:34
  * @LastEditors: liuzhenghe
- * @LastEditTime: 2020-10-17 15:02:03
+ * @LastEditTime: 2020-11-14 15:38:15
  * @Descripttion: 热力图
 --> 
 <template>
   <div id="map-container"
-       style="width:100%;height:100%;">
+    style="width:100%;height:100%;">
     <div
-         style="position:absolute;right:50px;top:50px;z-index:999;">
+      style="position:absolute;right:50px;top:50px;z-index:999;">
       <button
-              @click="addHeatMap(heatMapData,'count')">热力图</button>
+        @click="addHeatMap()">热力图</button>
       <button
-              @click="clearHeatMap()">clear</button>
+        @click="clearHeatMap()">clear</button>
     </div>
   </div>
 </template>
@@ -24,13 +24,6 @@ export default {
   name: 'HeatMap',
   data() {
     return {
-      heatMapData: [
-        { x: -13043465.062410325, y: 3857375.365345625, count: '10' },
-        { x: -13041492.031617718, y: 3857031.398718342, count: '100' },
-        { x: -13041042.964076541, y: 3855808.4062657813, count: '1000' },
-        { x: -13044606.840520333, y: 3854317.8842142224, count: '100' },
-        { x: -13043035.104126222, y: 3855120.4730112157, count: '10' },
-      ],
       map: '',
       gisConstructor: {}, // gis 构造函数
       gisModules: [
@@ -61,8 +54,17 @@ export default {
      * @param {data} Array
      * @param {type} String 权重值
      */
+    // eslint-disable-next-line no-unused-vars
     addHeatMap(data, type) {
-      let _type = type || 'ID'
+      let mockData = [
+        { x: -13043465.062410325, y: 3857375.365345625, count: '10' },
+        { x: -13041492.031617718, y: 3857031.398718342, count: '100' },
+        { x: -13041042.964076541, y: 3855808.4062657813, count: '1000' },
+        { x: -13044606.840520333, y: 3854317.8842142224, count: '100' },
+        { x: -13043035.104126222, y: 3855120.4730112157, count: '10' },
+      ]
+      // let _type = type || 'ID'
+      let _type = 'count'
       let layerDefinition = {
         geometryType: 'esriGeometryPoint',
         fields: [
@@ -111,15 +113,15 @@ export default {
       }
       heatMapLayer.setRenderer(heatmapRenderer)
       this.map.addLayer(heatMapLayer, 9)
-      for (let i = 0; i < data.length; i++) {
+      for (let i = 0; i < mockData.length; i++) {
         let point = new this.gisConstructor.Point(
-          data[i].x,
-          data[i].y,
+          mockData[i].x,
+          mockData[i].y,
           new this.gisConstructor.SpatialReference(this.map.spatialReference)
         )
         let graphic = new this.gisConstructor.graphic(point)
         if (_type !== 'ID') {
-          let count = Number(data[i].count)
+          let count = Number(mockData[i].count)
           graphic.setAttributes({ count: count })
         }
         heatMapLayer.refresh()
@@ -133,7 +135,9 @@ export default {
       })
     },
 
-    // 初始化地图
+    /**
+     * @name: 初始化地图
+     */
     init() {
       // 加载 css
       loadCss('https://js.arcgis.com/3.32/esri/css/esri.css')

@@ -198,7 +198,6 @@ function drawGraphic(event) {
                 new this.gisConstructor.SimpleLineSymbol(setLineSymbolStyle.call(this)),
                 setSymbolColor.call(this, 'fill'),
             )
-            console.log(event.geometr)
             DrawGraphicsLayer.add(new this.gisConstructor.graphic(
                 event.geometry,
                 resultSymbol, {
