@@ -3,7 +3,7 @@
  * @Email: 15901450207@163.com
  * @Date: 2020-07-06 14:34:54
  * @LastEditors: liuzhenghe
- * @LastEditTime: 2020-11-06 18:31:56
+ * @LastEditTime: 2020-11-13 15:40:00
  * @Descripttion: 自定义标注
 --> 
 
@@ -171,19 +171,32 @@ export default {
       this.customSymbolsLayer.add(pointSymbolGraphic)
 
       // 添加线
-      let lineJson = {
-        paths: [[-13044279.594493024, 3856594.274462842], [-13044169.71626486, 3856011.442122152], [-13043644.211695386, 3856011.442122152], [-13043586.883924171, 3855763.021780219], [-13042918.059926659, 3855810.7949228985]],
-        spatialReference: new this.gisConstructor.SpatialReference(this.map.spatialReference)
-      }
-      let lineGeometry = new this.gisConstructor.Polyline(lineJson)
-      let lineSymbol = new this.gisConstructor.SimpleLineSymbol()
-      let lineSymbolGraphic = new this.gisConstructor.graphic(
-        lineGeometry,
-        lineSymbol,
+      let polylineSymbol = new this.gisConstructor.SimpleLineSymbol(
+        this.gisConstructor.SimpleLineSymbol.STYLE_SOLID,
+        new this.gisConstructor.Color([255, 0, 0, 1]),
+        3
       )
-      console.log(lineSymbolGraphic)
-      this.customSymbolsLayer.add(lineSymbolGraphic)
+      let polylinePaths = []
+      polylinePaths[0] = [[-13043465.062410325, 3857375.365345625], [-13043035.104126222, 3855120.4730112157], [-13041492.031617718, 3857031.398718342]]
+      let polylineGeometry = new this.gisConstructor.Polyline({
+        paths: polylinePaths,
+        spatialReference: this.map.spatialReference
+      })
+      let polylineGraphic = new this.gisConstructor.graphic(
+        polylineGeometry,
+        polylineSymbol
+      )
+      this.customSymbolsLayer.add(polylineGraphic)
+
       // 添加面
+      let polygonSymbol = new this.gisConstructor.SimpleFillSymbol(
+        this.gisConstructor.SimpleFillSymbol.STYLE_SOLID,
+        {
+          color: setSymbolColor.call(this, 'line'),
+          width: 2,
+        },
+        new this.gisConstructor.Color([255, 0, 0, 1])
+      )
 
 
       // 添加多个文字图标标注
@@ -234,8 +247,10 @@ export default {
     init() {
       // 加载 css
       loadCss('https://js.arcgis.com/3.32/esri/css/esri.css')
+      // loadCss('http://localhost:8081/static/arcgis/3.34/esri/css/esri.css')
       // 加载模块
       loadModules(this.gisModules, {
+        // url: 'http://localhost:8081/static/arcgis/3.34/init.js',
         url: 'https://js.arcgis.com/3.32/',
       })
         .then(this.initMap)
