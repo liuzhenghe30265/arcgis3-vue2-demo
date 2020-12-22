@@ -3,7 +3,7 @@
  * @Email: 15901450207@163.com
  * @Date: 2020-07-11 09:06:28
  * @LastEditors: liuzhenghe
- * @LastEditTime: 2020-11-14 16:08:17
+ * @LastEditTime: 2020-12-22 17:58:50
  * @Descripttion: 加载 ArcGIS REST Services
 --> 
 
@@ -75,9 +75,24 @@ export default {
       map: '',
       gisConstructor: {}, // gis 构造函数
       gisModules: [
+        'esri/SpatialReference',
+        'esri/Color',
+        'esri/symbols/TextSymbol',
+        'esri/symbols/SimpleMarkerSymbol',
+        'esri/symbols/SimpleLineSymbol',
+        'esri/symbols/SimpleFillSymbol',
+        'esri/symbols/PictureMarkerSymbol',
+        'esri/symbols/Font',
+        'esri/geometry/Point',
+        'esri/geometry/Polyline',
+        'esri/geometry/Polygon',
+        'esri/geometry/geometryEngine',
+        'esri/layers/GraphicsLayer', // 图形图层
+        'esri/graphic', // 图形
         'dojo/_base/declare',
-        'esri/layers/ArcGISTiledMapServiceLayer', // 切片服务图层
-        'esri/layers/ArcGISDynamicMapServiceLayer', // 动态服务图层
+        'esri/layers/FeatureLayer', // 要素图层服务
+        'esri/layers/ArcGISTiledMapServiceLayer', // 切片图层服务
+        'esri/layers/ArcGISDynamicMapServiceLayer', // 动态图层服务
         'esri/geometry/Extent', // 范围
         'esri/map',
       ],
@@ -169,6 +184,52 @@ export default {
           console.log(layer.layerInfos)
         })
       }
+
+      // 使用 FeatureLayer 做高亮效果
+      let highLightLayer = new this.gisConstructor.GraphicsLayer({
+        id: '高亮图层'
+      })
+      this.map.addLayer(highLightLayer)
+
+      let facetServerLayer = new this.gisConstructor.FeatureLayer('https://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/3', {
+        mode: this.gisConstructor.FeatureLayer.MODE_ONDEMAND, // MODE_SNAPSHOT（全部请求），MODE_ONDEMAND（按需请求）
+        outFields: ["*"],
+        opacity: 0,
+        // geometry: '13176890.213824289,4480557.8370849015,13178644.95887128,4481818.078861634'
+      })
+      this.map.addLayer(facetServerLayer)
+      facetServerLayer.on('mouse-over', evt => {
+        let layerChecked = this.$refs.tree.getCheckedKeys()
+        if (evt.graphic && layerChecked.indexOf(3) > -1) {
+          let data = evt.graphic.attributes
+          let geometry = evt.graphic.geometry
+          let fillSymbol = new this.gisConstructor.SimpleFillSymbol().setColor(new this.gisConstructor.Color([255, 0, 0, 0.3]))
+          fillSymbol.setOutline(new this.gisConstructor.SimpleLineSymbol(this.gisConstructor.SimpleLineSymbol.STYLE_SOLID, new this.gisConstructor.Color([255, 0, 0]), 3))
+          let fillGraphic = new this.gisConstructor.graphic(geometry, fillSymbol)
+          highLightLayer.add(fillGraphic)
+
+          let centerPoint = geometry.getExtent().getCenter()
+          let textSymbol = new this.gisConstructor.TextSymbol(
+            data.name,
+            new this.gisConstructor.Font('12px'),
+            new this.gisConstructor.Color([255, 0, 0])
+          )
+          let holoColor = this.gisConstructor.Color('#fff')
+          textSymbol.setHaloColor(holoColor).setHaloSize(2)
+          let textGraphic = new this.gisConstructor.graphic(
+            centerPoint,
+            textSymbol,
+            data
+          )
+          highLightLayer.add(textGraphic)
+        } else {
+          highLightLayer.clear()
+        }
+      })
+      facetServerLayer.on('mouse-out', () => {
+        highLightLayer.clear()
+      })
+
     },
 
     /**
@@ -206,11 +267,17 @@ export default {
         logo: false,
         slider: true,
       })
+      // let extent = {
+      //   xmin: -117.1839455,
+      //   ymin: 32.68087830000002,
+      //   xmax: -117.15035189999998,
+      //   ymax: 32.732100979999984,
+      // }
       let extent = {
-        xmin: -117.1839455,
-        ymin: 32.68087830000002,
-        xmax: -117.15035189999998,
-        ymax: 32.732100979999984,
+        xmin: -178.217598382,
+        ymin: 18.921786345999976,
+        xmax: -66.96927110500002,
+        ymax: 71.40623554799998,
       }
       this.map.setExtent(
         new this.gisConstructor.Extent(
