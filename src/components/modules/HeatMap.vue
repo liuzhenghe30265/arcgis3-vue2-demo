@@ -3,18 +3,18 @@
  * @Email: 15901450207@163.com
  * @Date: 2020-07-10 13:55:34
  * @LastEditors: liuzhenghe
- * @LastEditTime: 2020-11-14 15:38:15
+ * @LastEditTime: 2020-12-22 15:19:42
  * @Descripttion: 热力图
 --> 
 <template>
   <div id="map-container"
-    style="width:100%;height:100%;">
+       style="width:100%;height:100%;">
     <div
-      style="position:absolute;right:50px;top:50px;z-index:999;">
+         style="position:absolute;right:50px;top:50px;z-index:999;">
       <button
-        @click="addHeatMap()">热力图</button>
+              @click="addHeatMap()">热力图</button>
       <button
-        @click="clearHeatMap()">clear</button>
+              @click="clearHeatMap()">clear</button>
     </div>
   </div>
 </template>
@@ -166,13 +166,6 @@ export default {
         xmax: -117.15035189999998,
         ymax: 32.732100979999984,
       }
-      /*
-        如果坐标系是 4490，初始化范围需要设置空间参考坐标系
-        // 'esri/SpatialReference',
-        new this.gisConstructor.SpatialReference({
-          wkid: 4490
-        })
-      */
       this.map.setExtent(
         new this.gisConstructor.Extent(
           extent.xmin,

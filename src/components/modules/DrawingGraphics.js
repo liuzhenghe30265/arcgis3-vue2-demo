@@ -177,13 +177,6 @@ function drawGraphic(event) {
         } else if (_type === 'polyline') {
             resultSymbol = new this.gisConstructor.SimpleLineSymbol(setLineSymbolStyle.call(this))
             console.log(event.geometry)
-            console.log(new this.gisConstructor.graphic(
-                event.geometry,
-                resultSymbol, {
-                    id: symbolID,
-                    name: '图形标注'
-                }
-            ))
             DrawGraphicsLayer.add(new this.gisConstructor.graphic(
                 event.geometry,
                 resultSymbol, {

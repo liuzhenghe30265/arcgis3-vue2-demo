@@ -9,20 +9,24 @@
 
 <template>
   <div id="map-container"
-    style="width:100%;height:100%;">
+       style="width:100%;height:100%;">
     <div
-      style="position:absolute;right:50px;top:50px;z-index:999;width:200px;">
+         style="position:absolute;right:50px;top:50px;z-index:999;width:200px;">
       <el-tree :data="treeData2"
-        show-checkbox node-key="id"
-        @check-change="handleCheckChange2"
-        ref="tree2" highlight-current>
+               show-checkbox
+               node-key="id"
+               @check-change="handleCheckChange2"
+               ref="tree2"
+               highlight-current>
       </el-tree>
       <hr>
       <el-tree :data="treeData"
-        :props="defaultProps"
-        show-checkbox node-key="id"
-        @check-change="handleCheckChange"
-        ref="tree" highlight-current>
+               :props="defaultProps"
+               show-checkbox
+               node-key="id"
+               @check-change="handleCheckChange"
+               ref="tree"
+               highlight-current>
       </el-tree>
     </div>
   </div>
@@ -176,7 +180,9 @@ export default {
       })
     },
 
-    // 初始化地图
+    /**
+     * @name: 初始化地图
+     */
     init() {
       // 加载 css
       loadCss('https://js.arcgis.com/3.32/esri/css/esri.css')

@@ -3,7 +3,7 @@
  * @Email: 15901450207@163.com
  * @Date: 2020-06-20 11:40:53
  * @LastEditors: liuzhenghe
- * @LastEditTime: 2020-10-19 10:50:36
+ * @LastEditTime: 2020-12-22 15:04:03
  * @Descripttion: 初始化地图
 --> 
 
@@ -115,10 +115,18 @@ export default {
         ymax: 32.732100979999984,
       }
       /*
-        如果坐标系是 4490，初始化范围需要设置空间参考坐标系
-        new this.gisConstructor.SpatialReference({
-          wkid: 4490
-        })
+        指定空间参考坐标系
+        this.map.setExtent(
+          new this.gisConstructor.Extent(
+            extent.xmin,
+            extent.ymin,
+            extent.xmax,
+            extent.ymax,
+            new this.gisConstructor.SpatialReference({
+              wkid: 4490
+            })
+          )
+        )
       */
       this.map.setExtent(
         new this.gisConstructor.Extent(

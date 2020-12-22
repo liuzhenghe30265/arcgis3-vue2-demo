@@ -3,19 +3,19 @@
  * @Email: 15901450207@163.com
  * @Date: 2020-07-06 14:34:54
  * @LastEditors: liuzhenghe
- * @LastEditTime: 2020-11-14 15:16:58
+ * @LastEditTime: 2020-12-22 15:15:55
  * @Descripttion: 自定义标注
 --> 
 
 <template>
   <div id="map-container"
-    style="width:100%;height:100%;">
+       style="width:100%;height:100%;">
     <div
-      style="position:absolute;right:50px;top:50px;z-index:999;">
+         style="position:absolute;right:50px;top:50px;z-index:999;">
       <button
-        @click="addCustomSymbols()">自定义标注</button>
+              @click="addCustomSymbols()">自定义标注</button>
       <button
-        @click="clearCustomSymbols()">清除标注</button>
+              @click="clearCustomSymbols()">清除标注</button>
     </div>
   </div>
 </template>
@@ -65,8 +65,8 @@ export default {
 
     /**
      * @name: 设置中心点和缩放
-     * @param {point} Array
-     * @param {zoom} Number
+     * @param {Array} point
+     * @param {Number} zoom
      */
     setCenterAndZoom(point, zoom) {
       let _point = new this.gisConstructor.Point(
@@ -90,7 +90,7 @@ export default {
 
     /**
      * @name: 根据图层 ID 清除图层上的图形标注
-     * @param {ID} 图层 id
+     * @param {String} ID
      */
     clearCustomSymbols(ID) {
       if (ID) {
@@ -114,7 +114,7 @@ export default {
 
     /**
      * @name: 添加自定义标注
-     * @param {data} Array 坐标集合
+     * @param {Array} data 坐标集合
      */
     addCustomSymbols() {
       this.clearCustomSymbols('自定义标注图层')
@@ -351,6 +351,33 @@ export default {
         .then(this.addCustomLayer)
         .then(this.mapClickFun)
     },
+    initMap(args) {
+      // 将 ArcGIS 的每个功能模块都存放到 gisConstructor 中
+      for (let k in args) {
+        let name = this.gisModules[k].split('/').pop()
+        this.gisConstructor[name] = args[k]
+      }
+      this.map = new this.gisConstructor.map('map-container', {
+        basemap: 'osm',
+        logo: false,
+        slider: true
+      })
+      // 设置初始化范围
+      let extent = {
+        xmin: -117.1839455,
+        ymin: 32.68087830000002,
+        xmax: -117.15035189999998,
+        ymax: 32.732100979999984,
+      }
+      this.map.setExtent(
+        new this.gisConstructor.Extent(
+          extent.xmin,
+          extent.ymin,
+          extent.xmax,
+          extent.ymax
+        )
+      )
+    },
 
     /**
      * @name: 添加自定义图层
@@ -388,7 +415,7 @@ export default {
         if (evt.graphic.geometry) {
           let geometry = evt.graphic.geometry
           if (geometry.x && geometry.y) {
-            // 面
+            // 点
           }
           if (geometry.paths) {
             // 线
@@ -405,41 +432,6 @@ export default {
       this.customSymbolsLayer.on("mouse-out", () => {
         highlightLayer.clear()
       })
-    },
-    initMap(args) {
-      // 将 ArcGIS 的每个功能模块都存放到 gisConstructor 中
-      for (let k in args) {
-        let name = this.gisModules[k].split('/').pop()
-        this.gisConstructor[name] = args[k]
-      }
-      this.map = new this.gisConstructor.map('map-container', {
-        basemap: 'osm',
-        logo: false,
-        slider: true,
-        wkid: '4490',
-      })
-      // 设置初始化范围
-      let extent = {
-        xmin: -117.1839455,
-        ymin: 32.68087830000002,
-        xmax: -117.15035189999998,
-        ymax: 32.732100979999984,
-      }
-      /*
-        如果坐标系是 4490，初始化范围需要设置空间参考坐标系
-        // 'esri/SpatialReference',
-        new this.gisConstructor.SpatialReference({
-          wkid: 4490
-        })
-      */
-      this.map.setExtent(
-        new this.gisConstructor.Extent(
-          extent.xmin,
-          extent.ymin,
-          extent.xmax,
-          extent.ymax
-        )
-      )
     },
   },
 }

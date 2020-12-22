@@ -3,7 +3,7 @@
  * @Email: 15901450207@163.com
  * @Date: 2020-07-11 09:06:28
  * @LastEditors: liuzhenghe
- * @LastEditTime: 2020-10-17 13:54:54
+ * @LastEditTime: 2020-12-22 15:17:59
  * @Descripttion: 绘制工具
 --> 
 
@@ -153,7 +153,6 @@ export default {
         .then(this.initMap)
         .then(this.mapClickFun)
     },
-    // 初始化地图
     initMap(args) {
       // 将 ArcGIS 的每个功能模块都存放到 gisConstructor 中
       for (let k in args) {
@@ -171,12 +170,6 @@ export default {
         xmax: -117.15035189999998,
         ymax: 32.732100979999984,
       }
-      /*
-        如果坐标系是 4490，初始化范围需要设置空间参考坐标系
-        new this.gisConstructor.SpatialReference({
-          wkid: 4490
-        })
-      */
       this.map.setExtent(
         new this.gisConstructor.Extent(
           extent.xmin,

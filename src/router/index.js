@@ -28,11 +28,11 @@ const routes = [{
     name: '热力图',
     component: resolve => require(['@/components/modules/HeatMap.vue'], resolve),
   },
-  // {
-  //   path: '/TrackPlayback',
-  //   name: '轨迹回放',
-  //   component: resolve => require(['@/components/modules/TrackPlayback.vue'], resolve),
-  // },
+  {
+    path: '/TrackPlayback',
+    name: '轨迹回放',
+    component: resolve => require(['@/components/modules/TrackPlayback.vue'], resolve),
+  },
 ]
 
 const router = new VueRouter({
