@@ -31,7 +31,6 @@ export default {
       gisModules: [
         'esri/SpatialReference',
         'esri/Color',
-        'esri/symbols/TextSymbol',
         'esri/symbols/SimpleMarkerSymbol',
         'esri/symbols/SimpleLineSymbol',
         'esri/symbols/SimpleFillSymbol',
