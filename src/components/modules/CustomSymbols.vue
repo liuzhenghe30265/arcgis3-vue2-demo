@@ -3,7 +3,7 @@
  * @Email: 15901450207@163.com
  * @Date: 2020-07-06 14:34:54
  * @LastEditors: liuzhenghe
- * @LastEditTime: 2020-12-22 15:15:55
+ * @LastEditTime: 2020-12-24 16:25:12
  * @Descripttion: 自定义标注
 --> 
 
@@ -71,7 +71,7 @@ export default {
       let _point = new this.gisConstructor.Point(
         point[0],
         point[1],
-        new this.gisConstructor.SpatialReference(this.map.spatialReference)
+        // new this.gisConstructor.SpatialReference(this.map.spatialReference)
       )
       if (zoom) {
         this.map.centerAt(_point)
@@ -121,23 +121,23 @@ export default {
       // 添加点
       let pointList = [
         {
-          x: -13045958.820458127,
-          y: 3857040.953346878
+          x: -117.1938420441142,
+          y: 32.71125985325878,
         },
         {
-          x: - 13046302.78708541,
-          y: 3855244.6831821785
+          x: -117.19693194889935,
+          y: 32.697681773023454,
         },
         {
-          x: -13043281.135811023,
-          y: 3855505.0468097497
+          x: -117.16978799366875,
+          y: 32.69965000045051,
         }
       ]
       pointList.forEach(item => {
         let pointGeometry = new this.gisConstructor.Point(
           item.x,
           item.y,
-          new this.gisConstructor.SpatialReference(this.map.spatialReference)
+          // new this.gisConstructor.SpatialReference(this.map.spatialReference) // 如果是墨卡托坐标（x: -13045958.820458127,y: 3857040.953346878），添加点、线、面图形时，需要设置空间坐标系。如果是经纬度（longitude: -117.17092525029109, latitude: 32.70459746302129），则不需要。
         )
         let pointSymbol = new this.gisConstructor.SimpleMarkerSymbol({
           color: new this.gisConstructor.Color([255, 0, 0]),
@@ -156,25 +156,25 @@ export default {
         {
           paths: [
             [
-              [-13039796.085052641, 3858789.450368899],
-              [-13039862.96745239, 3855101.3637541444]
+              [-117.13848125004688, 32.72447482969995],
+              [-117.13908206486619, 32.696598326560064]
             ]
           ]
         },
         {
           paths: [
             [
-              [-13043465.062410325, 3857375.365345625],
-              [-13043035.104126222, 3855120.4730112157],
-              [-13041492.031617718, 3857031.398718342]
+              [-117.17144023442182, 32.713787459203424],
+              [-117.1675778534404, 32.69674278684837],
+              [-117.15371619725147, 32.711187634893705]
             ]
           ]
         },
         {
           paths: [
             [
-              [-13045423.761260131, 3854050.3546152245],
-              [-13043388.62538204, 3853801.934273298]
+              [-117.1890355255595, 32.68865265066504],
+              [-117.17075358891401, 32.68677447848705]
             ]
           ]
         }
@@ -187,7 +187,7 @@ export default {
         )
         let polylineGeometry = new this.gisConstructor.Polyline({
           paths: item.paths,
-          spatialReference: this.map.spatialReference
+          // spatialReference: this.map.spatialReference
         })
         let polylineGraphic = new this.gisConstructor.graphic(
           polylineGeometry,
@@ -201,35 +201,35 @@ export default {
         {
           rings: [
             [
-              [-13042519.154185297, 3858502.8115128297],
-              [-13040761.102534741, 3858053.743971655],
-              [-13040780.211791812, 3857432.693116839],
-              [-13040722.884020599, 3856209.7006642777],
-              [-13041057.296019346, 3856219.2552928133],
-              [-13041859.88481634, 3856544.112663025],
-              [-13042519.154185297, 3858502.8115128297]
+              [-117.16294299626267, 32.72230857431127],
+              [-117.14715014958301, 32.71891466839404],
+              [-117.14732181095995, 32.71422075588838],
+              [-117.14680682682909, 32.70497663679212],
+              [-117.14981090092577, 32.70504886018483],
+              [-117.15702067875779, 32.70750442075382],
+              [-117.16294299626267, 32.72230857431127]
             ]
           ]
         },
         {
           rings: [
             [
-              [-13040608.228478171, 3855225.5739251073],
-              [-13040254.707222352, 3855588.6498094616],
-              [-13039251.471226111, 3854824.279526611],
-              [-13039194.143454896, 3854308.329585687],
-              [-13039824.748938248, 3854499.422156399],
-              [-13040608.228478171, 3855225.5739251073]
+              [-117.14577685856739, 32.697537314254866],
+              [-117.14260112309374, 32.70028199087702],
+              [-117.13358890080373, 32.69450362610648],
+              [-117.13307391667286, 32.6906030184187],
+              [-117.1387387421123, 32.692047707804406],
+              [-117.14577685856739, 32.697537314254866]
             ]
           ]
         },
         {
           rings: [
             [
-              [-13045309.105717704, 3858646.1309408643],
-              [-13043904.575322965, 3858197.0633996897],
-              [-13045223.114060882, 3857270.264431733],
-              [-13045309.105717704, 3858646.1309408643]
+              [-117.1880055572978, 32.72339170858406],
+              [-117.17538844609174, 32.719997843890354],
+              [-117.18723308110151, 32.71299307648107],
+              [-117.1880055572978, 32.72339170858406]
             ]
           ]
         }
@@ -247,7 +247,7 @@ export default {
         )
         let polygonGeometry = new this.gisConstructor.Polygon({
           rings: item.rings,
-          spatialReference: this.map.spatialReference
+          // spatialReference: this.map.spatialReference
         })
         let polygonGraphic = new this.gisConstructor.graphic(
           polygonGeometry,
@@ -261,32 +261,32 @@ export default {
       let symbolData = [
         {
           text: 'marker1',
-          x: -13043465.062410325,
-          y: 3857375.365345625,
+          x: -117.17144023442182,
+          y: 32.713787459203424,
           type: 1,
         },
         {
           text: 'marker2',
-          x: -13041492.031617718,
-          y: 3857031.398718342,
+          x: -117.15371619725147,
+          y: 32.711187634893705,
           type: 2,
         },
         {
           text: 'marker3',
-          x: -13041042.964076541,
-          y: 3855808.4062657813,
+          x: -117.14968215489304,
+          y: 32.70194320151179,
           type: 2,
         },
         {
           text: 'marker4',
-          x: -13044606.840520333,
-          y: 3854317.8842142224,
+          x: -117.18169700169476,
+          y: 32.690675253443224,
           type: 3,
         },
         {
           text: 'marker5',
-          x: -13043035.104126222,
-          y: 3855120.4730112157,
+          x: -117.1675778534404,
+          y: 32.69674278684837,
           type: 3,
         },
       ]
@@ -302,7 +302,7 @@ export default {
         let point = new this.gisConstructor.Point(
           item.x,
           item.y,
-          new this.gisConstructor.SpatialReference(this.map.spatialReference)
+          // new this.gisConstructor.SpatialReference(this.map.spatialReference)
         )
         let symbol = new this.gisConstructor.PictureMarkerSymbol({
           url: icon,
@@ -326,7 +326,7 @@ export default {
           new this.gisConstructor.Point(
             item.x,
             item.y,
-            new this.gisConstructor.SpatialReference(this.map.spatialReference)
+            // new this.gisConstructor.SpatialReference(this.map.spatialReference)
           ),
           textSymbol
         )

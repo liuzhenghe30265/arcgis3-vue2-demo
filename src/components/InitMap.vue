@@ -3,7 +3,7 @@
  * @Email: 15901450207@163.com
  * @Date: 2020-06-20 11:40:53
  * @LastEditors: liuzhenghe
- * @LastEditTime: 2020-12-22 15:04:03
+ * @LastEditTime: 2020-12-24 18:21:19
  * @Descripttion: 初始化地图
 --> 
 
@@ -41,6 +41,11 @@ export default {
       map: '',
       gisConstructor: {}, // gis 构造函数
       gisModules: [
+        'esri/geometry/webMercatorUtils',// 墨卡托坐标转换
+        'esri/geometry/Point',
+        'esri/SpatialReference',
+        'esri/tasks/GeometryService',
+        'esri/tasks/ProjectParameters',
         'esri/toolbars/navigation', // 地图导航工具
         'dojo/_base/declare',
         'esri/dijit/OverviewMap', // 小地图
@@ -48,6 +53,7 @@ export default {
         'esri/dijit/LocateButton', // 当前位置
         'esri/dijit/HomeButton', // 返回到地图默认开始范围
         'esri/layers/OpenStreetMapLayer', // OSM
+        'esri/layers/ArcGISTiledMapServiceLayer', // 切片图层服务
         'esri/geometry/Extent', // 范围
         'esri/map',
       ],
@@ -63,6 +69,24 @@ export default {
     mapClickFun() {
       this.map.on('click', e => {
         console.log(e)
+
+        // arcgis4 中，地图点击事件返回的 mapPoint 有两种坐标信息，墨卡托坐标（x: -13045958.820458127,y: 3857040.953346878）和经纬度（longitude: -117.17092525029109, latitude: 32.70459746302129），arcgis3 中只返回了墨卡托坐标。获取经纬度：
+        // 方式一：
+        console.log(this.gisConstructor.webMercatorUtils.xyToLngLat(e.mapPoint.x, e.mapPoint.y))
+
+        // 方式二：
+        console.log([e.mapPoint.getLongitude(), e.mapPoint.getLatitude()])
+
+        // 方式三：
+        let PrjParams = new this.gisConstructor.ProjectParameters()
+        PrjParams.geometries = [e.mapPoint] // Array 可以写多个点批量转换
+        PrjParams.outSR = new this.gisConstructor.SpatialReference({ wkid: 4490 }) // 输出的坐标系
+        PrjParams.transformForward = true // 是否向前转换
+        let geometryService = new this.gisConstructor.GeometryService('https://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/Geometry/GeometryServer')
+        geometryService.project(PrjParams, (outputpoints) => {
+          console.log(outputpoints[0])
+        })
+
       })
     },
 
@@ -87,25 +111,42 @@ export default {
         let name = this.gisModules[k].split('/').pop()
         this.gisConstructor[name] = args[k]
       }
-      /**
-       * 添加 OSM 有两种方式
-       * 方式一：在初始化 map 时设置 basemap 属性 basemap: 'osm'
-       * 方式二：加载 OpenStreetMapLayer 模块，创建 OSM layer，再添加 layer 到 map 中，可单独对 OSM 进行配置
-       */
-      let basemap = new this.gisConstructor.OpenStreetMapLayer({
-        id: 'OSMlayer',
-        visible: true,
-        opacity: 1,
-        // displayLevels: [1, 2, 3] // 在指定缩放等级下显示
-      })
+
       this.map = new this.gisConstructor.map('map-container', {
-        // center: [116.395645038, 39.9299857781],
-        // basemap: 'osm',
+        // center: [-117.16856490635791, 32.70441690351651],
+        basemap: 'osm', // hybrid
         zoom: 12,
         logo: false,
         slider: true,
+        isZoomSlider: true,
+        isDoubleClickZoom: false,
+        autoResize: true,
+        // maxZoom: 16, //地图最大缩放级别
+        // minZoom: 7, //地图最小缩放级别
+        // spatialReference: {
+        //   wkid: '4490'
+        // }
       })
-      this.map.addLayer(basemap)
+
+      /**
+       * 添加 OSM 有两种方式：
+       * 方式一：在初始化 map 时设置 basemap 属性 basemap: 'osm'
+       * 方式二：加载 OpenStreetMapLayer 模块，创建 OSM layer，再添加 layer 到 map 中，可单独对 OSM 进行配置
+       */
+      // let basemap = new this.gisConstructor.OpenStreetMapLayer({
+      //   id: 'OSMlayer',
+      //   visible: true,
+      //   opacity: 1,
+      //   // displayLevels: [1, 2, 3] // 在指定缩放等级下显示
+      // })
+      // this.map.addLayer(basemap)
+
+      // 添加一个电子地图
+      // let basemap = new this.gisConstructor.ArcGISTiledMapServiceLayer('https://sampleserver6.arcgisonline.com/arcgis/rest/services/World_Street_Map/MapServer', {
+      //   id: '电子地图',
+      //   visible: true,
+      // })
+      // this.map.addLayer(basemap)
 
       // 设置初始化范围
       let extent = {
@@ -114,26 +155,15 @@ export default {
         xmax: -117.15035189999998,
         ymax: 32.732100979999984,
       }
-      /*
-        指定空间参考坐标系
-        this.map.setExtent(
-          new this.gisConstructor.Extent(
-            extent.xmin,
-            extent.ymin,
-            extent.xmax,
-            extent.ymax,
-            new this.gisConstructor.SpatialReference({
-              wkid: 4490
-            })
-          )
-        )
-      */
       this.map.setExtent(
         new this.gisConstructor.Extent(
           extent.xmin,
           extent.ymin,
           extent.xmax,
-          extent.ymax
+          extent.ymax,
+          // new this.gisConstructor.SpatialReference({
+          //   wkid: 4490
+          // })
         )
       )
 

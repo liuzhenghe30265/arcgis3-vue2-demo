@@ -3,7 +3,7 @@
  * @Email: 15901450207@163.com
  * @Date: 2020-07-11 09:06:28
  * @LastEditors: liuzhenghe
- * @LastEditTime: 2020-12-22 15:17:59
+ * @LastEditTime: 2020-12-22 18:31:22
  * @Descripttion: 绘制工具
 --> 
 
@@ -101,9 +101,9 @@ export default {
     /**
      * @name: 绘制工具
      * @msg: 标绘,空间测量,空间统计
-     * @param {name}
-     * @param {type}
-     * @param {text} true
+     * @param {String} name
+     * @param {String} type
+     * @param {String} text
      */
     drawingGraphicsTool(name, type, text) {
       if (name && type) {
