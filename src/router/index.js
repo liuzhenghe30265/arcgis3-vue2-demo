@@ -33,6 +33,11 @@ const routes = [{
     name: '轨迹回放',
     component: resolve => require(['@/components/modules/TrackPlayback.vue'], resolve),
   },
+  {
+    path: '/AMap',
+    name: '高德地图',
+    component: resolve => require(['@/components/modules/AMap.vue'], resolve),
+  }
 ]
 
 const router = new VueRouter({
