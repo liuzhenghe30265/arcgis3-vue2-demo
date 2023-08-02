@@ -1,32 +1,12 @@
-<!--
- * @Author: liuzhenghe
- * @Email: 15901450207@163.com
- * @Date: 2020-07-11 09:06:28
- * @LastEditors: liuzhenghe
- * @LastEditTime: 2020-12-22 18:02:34
- * @Descripttion: 加载 ArcGIS REST Services
---> 
-
 <template>
-  <div id="map-container"
-       style="width:100%;height:100%;">
-    <div
-         style="position:absolute;right:50px;top:50px;z-index:999;width:200px;">
-      <el-tree :data="treeData2"
-               show-checkbox
-               node-key="id"
-               @check-change="handleCheckChange2"
-               ref="tree2"
-               highlight-current>
+  <div id="map-container" style="width:100%;height:100%;">
+    <div style="position:absolute;right:50px;top:50px;z-index:999;width:200px;">
+      <el-tree :data="treeData2" show-checkbox node-key="id" @check-change="handleCheckChange2" ref="tree2"
+        highlight-current>
       </el-tree>
       <hr>
-      <el-tree :data="treeData"
-               :props="defaultProps"
-               show-checkbox
-               node-key="id"
-               @check-change="handleCheckChange"
-               ref="tree"
-               highlight-current>
+      <el-tree :data="treeData" :props="defaultProps" show-checkbox node-key="id" @check-change="handleCheckChange"
+        ref="tree" highlight-current>
       </el-tree>
     </div>
   </div>
@@ -263,7 +243,7 @@ export default {
       }
 
       this.map = new this.gisConstructor.map('map-container', {
-        basemap: 'osm',
+        basemap: 'hybrid',
         logo: false,
         slider: true,
       })

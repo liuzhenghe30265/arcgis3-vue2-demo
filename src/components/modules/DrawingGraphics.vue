@@ -1,45 +1,23 @@
-<!--
- * @Author: liuzhenghe
- * @Email: 15901450207@163.com
- * @Date: 2020-07-11 09:06:28
- * @LastEditors: liuzhenghe
- * @LastEditTime: 2020-12-22 18:31:22
- * @Descripttion: 绘制工具
---> 
-
 <template>
-  <div id="map-container"
-       style="width:100%;height:100%;">
-    <div
-         style="position:absolute;right:50px;top:50px;z-index:999;">
+  <div id="map-container" style="width:100%;height:100%;">
+    <div style="position:absolute;right:50px;top:50px;z-index:999;">
       <span>标绘：</span>
-      <button
-              @click="drawingGraphicsTool('标绘', 'point')">点</button>
-      <button
-              @click="drawingGraphicsTool('标绘', 'polyline')">线</button>
-      <button
-              @click="drawingGraphicsTool('标绘', 'polygon')">面</button>
-      <button
-              @click="drawingGraphicsTool('标绘', 'point', 'text')">文字</button>
+      <button @click="drawingGraphicsTool('标绘', 'point')">点</button>
+      <button @click="drawingGraphicsTool('标绘', 'polyline')">线</button>
+      <button @click="drawingGraphicsTool('标绘', 'polygon')">面</button>
+      <button @click="drawingGraphicsTool('标绘', 'point', 'text')">文字</button>
       <br>
       <span>空间测量：</span>
-      <button
-              @click="drawingGraphicsTool('空间测量', 'point')">坐标测量</button>
-      <button
-              @click="drawingGraphicsTool('空间测量', 'polyline')">距离测量</button>
-      <button
-              @click="drawingGraphicsTool('空间测量', 'polygon')">面积测量</button>
+      <button @click="drawingGraphicsTool('空间测量', 'point')">坐标测量</button>
+      <button @click="drawingGraphicsTool('空间测量', 'polyline')">距离测量</button>
+      <button @click="drawingGraphicsTool('空间测量', 'polygon')">面积测量</button>
       <br>
       <span>空间统计：</span>
-      <button
-              @click="drawingGraphicsTool('空间统计', 'point')">点</button>
-      <button
-              @click="drawingGraphicsTool('空间统计', 'polyline')">线</button>
-      <button
-              @click="drawingGraphicsTool('空间统计', 'polygon')">面</button>
+      <button @click="drawingGraphicsTool('空间统计', 'point')">点</button>
+      <button @click="drawingGraphicsTool('空间统计', 'polyline')">线</button>
+      <button @click="drawingGraphicsTool('空间统计', 'polygon')">面</button>
       <br>
-      <button
-              @click="drawingGraphicsTool()">clear</button>
+      <button @click="drawingGraphicsTool()">clear</button>
     </div>
   </div>
 </template>
@@ -160,7 +138,7 @@ export default {
         this.gisConstructor[name] = args[k]
       }
       this.map = new this.gisConstructor.map('map-container', {
-        basemap: 'osm',
+        basemap: 'hybrid',
         logo: false,
         slider: true,
       })

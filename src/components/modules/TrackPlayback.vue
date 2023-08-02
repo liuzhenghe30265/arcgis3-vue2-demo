@@ -1,29 +1,12 @@
-<!--
- * @Author: liuzhenghe
- * @Email: 15901450207@163.com
- * @Date: 2020-07-06 14:34:54
- * @LastEditors: liuzhenghe
- * @LastEditTime: 2020-12-22 14:59:24
- * @Descripttion: 轨迹回放
---> 
-
 <template>
-  <div id="map-container"
-       style="width:100%;height:100%;">
-    <div
-         style="position:absolute;right:50px;top:50px;z-index:999;">
-      <button
-              @click="trackPlayBackInit()">轨迹回放</button>
-      <button
-              @click="trackPlayBackControl('开始')">开始</button>
-      <button
-              @click="trackPlayBackControl('停止')">停止</button>
-      <button
-              @click="trackPlayBackControl('加速')">加速</button>
-      <button
-              @click="trackPlayBackControl('减速')">减速</button>
-      <button
-              @click="trackPlayBackClear()">清除</button>
+  <div id="map-container" style="width:100%;height:100%;">
+    <div style="position:absolute;right:50px;top:50px;z-index:999;">
+      <button @click="trackPlayBackInit()">轨迹回放</button>
+      <button @click="trackPlayBackControl('开始')">开始</button>
+      <button @click="trackPlayBackControl('停止')">停止</button>
+      <button @click="trackPlayBackControl('加速')">加速</button>
+      <button @click="trackPlayBackControl('减速')">减速</button>
+      <button @click="trackPlayBackClear()">清除</button>
     </div>
   </div>
 </template>
@@ -191,7 +174,7 @@ export default {
         this.gisConstructor[name] = args[k]
       }
       this.map = new this.gisConstructor.map('map-container', {
-        basemap: 'osm',
+        basemap: 'hybrid',
         logo: false,
         slider: true,
       })

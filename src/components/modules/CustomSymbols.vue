@@ -1,21 +1,8 @@
-<!--
- * @Author: liuzhenghe
- * @Email: 15901450207@163.com
- * @Date: 2020-07-06 14:34:54
- * @LastEditors: liuzhenghe
- * @LastEditTime: 2020-12-24 16:25:12
- * @Descripttion: 自定义标注
---> 
-
 <template>
-  <div id="map-container"
-       style="width:100%;height:100%;">
-    <div
-         style="position:absolute;right:50px;top:50px;z-index:999;">
-      <button
-              @click="addCustomSymbols()">自定义标注</button>
-      <button
-              @click="clearCustomSymbols()">清除标注</button>
+  <div id="map-container" style="width:100%;height:100%;">
+    <div style="position:absolute;right:50px;top:50px;z-index:999;">
+      <button @click="addCustomSymbols()">自定义标注</button>
+      <button @click="clearCustomSymbols()">清除标注</button>
     </div>
   </div>
 </template>
@@ -357,7 +344,7 @@ export default {
         this.gisConstructor[name] = args[k]
       }
       this.map = new this.gisConstructor.map('map-container', {
-        basemap: 'osm',
+        basemap: 'hybrid',
         logo: false,
         slider: true
       })

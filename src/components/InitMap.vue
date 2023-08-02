@@ -1,19 +1,8 @@
-<!--
- * @Author: liuzhenghe
- * @Email: 15901450207@163.com
- * @Date: 2020-06-20 11:40:53
- * @LastEditors: liuzhenghe
- * @LastEditTime: 2020-12-24 18:21:19
- * @Descripttion: 初始化地图
---> 
-
 <template>
-  <div id="map-container"
-       style="width:100%;height:100%;">
+  <div id="map-container" style="width:100%;height:100%;">
     <div id="HomeButton"></div>
     <div id="LocateButton"></div>
-    <div id="navigation-toolbar"
-         class="navigation-toolbar">
+    <div id="navigation-toolbar" class="navigation-toolbar">
       <div class="nt-translation">
         <button id="resize"></button>
         <button id="east"></button>
@@ -22,8 +11,7 @@
         <button id="north"></button>
       </div>
       <div class="nt-zoom">
-        <button id="rule"
-                class="rule"></button>
+        <button id="rule" class="rule"></button>
         <button id="site"></button>
         <button id="zoomUp"></button>
         <button id="zoomDowm"></button>
@@ -114,7 +102,7 @@ export default {
 
       this.map = new this.gisConstructor.map('map-container', {
         // center: [-117.16856490635791, 32.70441690351651],
-        basemap: 'osm', // hybrid
+        // basemap: 'osm', // hybrid
         zoom: 12,
         logo: false,
         slider: true,
@@ -142,11 +130,11 @@ export default {
       // this.map.addLayer(basemap)
 
       // 添加一个电子地图
-      // let basemap = new this.gisConstructor.ArcGISTiledMapServiceLayer('https://sampleserver6.arcgisonline.com/arcgis/rest/services/World_Street_Map/MapServer', {
-      //   id: '电子地图',
-      //   visible: true,
-      // })
-      // this.map.addLayer(basemap)
+      let basemap = new this.gisConstructor.ArcGISTiledMapServiceLayer('https://sampleserver6.arcgisonline.com/arcgis/rest/services/World_Street_Map/MapServer', {
+        id: '电子地图',
+        visible: true,
+      })
+      this.map.addLayer(basemap)
 
       // 设置初始化范围
       let extent = {
@@ -283,30 +271,36 @@ export default {
 #map-container {
   position: relative;
 }
+
 #HomeButton {
   position: absolute;
   top: 95px;
   left: 20px;
   z-index: 50;
 }
+
 #LocateButton {
   position: absolute;
   top: 145px;
   left: 20px;
   z-index: 50;
 }
+
 .esriScalebarLabel {
   width: auto !important;
 }
+
 .esriOverviewMap.ovwTR {
   top: 50px !important;
 }
+
 #navigation-toolbar {
   position: absolute;
   top: 20px;
   left: 100px;
   z-index: 9;
   text-align: center;
+
   .nt-translation {
     width: 60px;
     height: 60px;
@@ -314,9 +308,11 @@ export default {
     background-repeat: no-repeat;
     background-size: contain;
     position: relative;
+
     button {
       width: 20px;
       height: 20px;
+
       &#resize {
         width: 26px;
         height: 26px;
@@ -328,21 +324,25 @@ export default {
         margin-left: -13px;
         margin-top: -13px;
       }
+
       &#east {
         top: 50%;
         right: 0;
         margin-top: -10px;
       }
+
       &#west {
         top: 50%;
         left: 0;
         margin-top: -10px;
       }
+
       &#south {
         left: 50%;
         bottom: 0;
         margin-left: -10px;
       }
+
       &#north {
         left: 50%;
         top: 0;
@@ -350,10 +350,12 @@ export default {
       }
     }
   }
+
   .nt-zoom {
     position: relative;
     height: 120px;
     margin-top: 20px;
+
     .rule {
       width: 20px;
       height: 104px;
@@ -365,23 +367,27 @@ export default {
       left: 50%;
       margin-left: -10px;
     }
+
     button {
       width: 16px;
       height: 16px;
       background-repeat: no-repeat;
       background-size: contain;
+
       &#zoomUp {
         left: 50%;
         top: -18px;
         margin-left: -8px;
         background-image: url('../assets/images/navtoolbar/ico04.png');
       }
+
       &#zoomDowm {
         left: 50%;
         bottom: -4px;
         margin-left: -8px;
         background-image: url('../assets/images/navtoolbar/ico05.png');
       }
+
       &#site {
         width: 11px;
         height: 11px;
@@ -392,6 +398,7 @@ export default {
       }
     }
   }
+
   button {
     cursor: pointer;
     position: absolute;
@@ -399,5 +406,4 @@ export default {
     outline: 0;
     border: 0;
   }
-}
-</style>
+}</style>

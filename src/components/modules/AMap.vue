@@ -107,17 +107,19 @@ export default {
 .map-mian {
   width: 100%;
   height: 100%;
+
   .map {
     width: 100%;
     height: 100%;
   }
+
   .amap-info-sharp {
     display: none;
   }
 }
+
 .ellipsis {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-}
-</style>
+}</style>

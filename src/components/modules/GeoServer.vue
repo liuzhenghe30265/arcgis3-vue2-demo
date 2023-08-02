@@ -1,15 +1,5 @@
-<!--
- * @Author: liuzhenghe
- * @Email: 15901450207@163.com
- * @Date: 2020-08-03 15:40:22
- * @LastEditors: liuzhenghe
- * @LastEditTime: 2020-11-14 15:44:57
- * @Descripttion: 加载 GeoServer
--->
-
 <template>
-  <div id="map-container"
-    style="width:100%;height:100%;">
+  <div id="map-container" style="width:100%;height:100%;">
   </div>
 </template>
 <script>
